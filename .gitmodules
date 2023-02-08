@@ -1,0 +1,3 @@
+[submodule "fairseq-ust"]
+	path = fairseq-ust
+	url = git@github.com:jefflai108/fairseq-ust.git
