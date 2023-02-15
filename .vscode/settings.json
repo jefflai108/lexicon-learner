@@ -1,0 +1,40 @@
+{
+    "python.linting.enabled": true,
+    "git.ignoreLimitWarning": true,
+    "editor.formatOnSave": false,
+    "python.linting.lintOnSave": true,
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}",
+    ],
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length=88"
+    ],
+    "isort.args":[
+        "--profile", "google",
+    ],
+    "files.trimTrailingWhitespace": true,
+    "cSpell.words": [
+        "absl",
+        "arange",
+        "coef",
+        "lstsq",
+        "matplotlib",
+        "mplstyle",
+        "ndim",
+        "pyplot",
+        "sklearn"
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintArgs": [
+        "--rcfile=${workspaceFolder}/.pylintrc"
+    ],
+    "files.watcherExclude": {
+        "**/.git/**": true,
+        "**/exps/**": true,
+        "**/data/**": true
+    },
+    "editor.rulers": [
+        88
+    ],
+}
