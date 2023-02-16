@@ -530,7 +530,7 @@ class COGSDataset(Seq2SeqDataset):
 
     @staticmethod
     def load_dataset(
-        root: str = "/raid/lingo/akyurek/git/align/COGS/cogs",
+        root: str = "COGS/cogs",
         vocab_x=None,
         vocab_y=None,
         substitute: bool = False,
@@ -679,7 +679,7 @@ class SPEECHDataset(Seq2SeqDataset):
 
     @staticmethod
     def load_dataset(
-        root: str = "/raid/lingo/akyurek/git/align/SPEECH/",
+        root: str = "SPEECH/",
         vocab_x=None,
         vocab_y=None,
         substitute: bool = False,
@@ -885,7 +885,7 @@ class ColorDataset(Seq2SeqDataset):
         hlog.value("test\n", test)
 
         datasets = {
-            "train": COGSDataset(
+            "train": COLORDataset(
                 train_items,
                 max_len_x,
                 max_len_y,
@@ -897,7 +897,7 @@ class ColorDataset(Seq2SeqDataset):
                 primitives=study,
                 study=study,
             ),
-            "val": COGSDataset(
+            "val": COLORDataset(
                 val_items,
                 max_len_x,
                 max_len_y,
@@ -909,7 +909,7 @@ class ColorDataset(Seq2SeqDataset):
                 primitives=study,
                 study=study,
             ),
-            "test": COGSDataset(
+            "test": COLORDataset(
                 test_items,
                 max_len_x,
                 max_len_y,

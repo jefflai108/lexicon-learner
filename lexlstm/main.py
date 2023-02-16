@@ -12,14 +12,12 @@ import numpy as np
 import seaborn as sns
 from src import dataset_utils
 from src import vocab
-from src.multiiter import MultiIter
 from src.projection import SoftAlign
 from src.utils import NoamLR
 from src.utils import RecordLoss
 import torch
 from torch import optim
 import torch.utils.data as torch_data
-from tqdm import tqdm
 from transformers import AutoTokenizer
 import wandb
 
