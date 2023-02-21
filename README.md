@@ -37,7 +37,7 @@ conda config --set channel_priority true
 conda config --show channels
 
 # install Satori default MLDL packages 
-conda install powerai
+conda install powerai # this is not required 
 
 # install torch. For Satori, remove torchaudio as it is not supported. We also do not want to find packages from the defauly PyTorch channel. 
 conda install pytorch torchvision 
