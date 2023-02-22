@@ -56,7 +56,76 @@ pip install --editable ./
 pip install tensorboardX pandas
 ```
 
+# Download necessary pre-trained models 
+
+```bash 
+# Download Pre-trained HuBERTs
+HUBERT_MODEL_DIR=/data/sls/temp/clai24/pretrained-models/mHuBERT
+cd $HUBERT_MODEL_DIR
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_roman_it3.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_slavic_it3.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_germanic_it3.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_uralic_it3.pt
+wget https://dl.fbaipublicfiles.com/hubert/mhubert_base_vp_en_es_fr_it3.pt
+
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_it_it3_L11_km800.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_pt_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_ro_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_cs_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_hr_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_lt_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_pl_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_sk_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_sl_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_de_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_nl_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_et_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_fi_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/speech_matrix/hubert/mhubert_base_vp_hu_it3_L11_km1000.bin
+wget https://dl.fbaipublicfiles.com/hubert/mhubert_base_vp_en_es_fr_it3_L11_km1000.bin
+
+# Download Pre-trained Unit HiFi-GAN 
+UNIT_VOCODER_DIR=/data/sls/temp/clai24/data/speech_matrix/unit_vocoder
+cd $UNIT_VOCODER_DIR
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_de.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_de.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_nl.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_nl.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_fi.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_fi.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_hu.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_hu.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_et.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_et.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_it.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_it.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_pt.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_pt.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_ro.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_ro.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_cs.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_cs.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_pl.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_pl.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_hr.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_hr.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_lt.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_lt.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_sk.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_sk.json
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/vocoder_sl.pt
+wget https://dl.fbaipublicfiles.com/speech_matrix/vocoder/config_sl.json
+wget -O vocoder_en.pt https://dl.fbaipublicfiles.com/fairseq/speech_to_speech/vocoder/code_hifigan/mhubert_vp_en_es_fr_it3_400k_layer11_km1000_lj/g_00500000
+wget -O config_en.json https://dl.fbaipublicfiles.com/fairseq/speech_to_speech/vocoder/code_hifigan/mhubert_vp_en_es_fr_it3_400k_layer11_km1000_lj/config.json
+wget -O vocoder_es.pt https://dl.fbaipublicfiles.com/fairseq/speech_to_speech/vocoder/code_hifigan/mhubert_vp_en_es_fr_it3_400k_layer11_km1000_es_css10/g_00500000
+wget -O config_es.json https://dl.fbaipublicfiles.com/fairseq/speech_to_speech/vocoder/code_hifigan/mhubert_vp_en_es_fr_it3_400k_layer11_km1000_es_css10/config.json
+wget -O vocoder_fr.pt https://dl.fbaipublicfiles.com/fairseq/speech_to_speech/vocoder/code_hifigan/mhubert_vp_en_es_fr_it3_400k_layer11_km1000_fr_css10/g_00500000
+wget -O config_fr.json https://dl.fbaipublicfiles.com/fairseq/speech_to_speech/vocoder/code_hifigan/mhubert_vp_en_es_fr_it3_400k_layer11_km1000_fr_css10/config.json
+```
+
 # Speech translation data setup with fairseq-ust
+
+For quick start, checkout our prepared `es-en` data at `data/speech_matrix/speech_to_unit/s2u_manifests/es-en/`.
 
 ```bash 
 cd fairseq-ust/examples/speech_matrix/
@@ -67,7 +136,7 @@ conda activate lexlearner
 # Run the following commands *sequentially*
 
 # SpeechMatrix: Speech-to-Speech Alignments (it takes 1-3 days to download all datasets)
-# Re-Running this to ensure aligned_speech are downlaoded correctly 
+# Re-Running this to ensure aligned_speech are downlaoded correctly on Satori 
 python mined_train_sets/download_mined_data.py --save-root ${SAVE_ROOT}
 
 # download the prepared audios for VoxPopuli valid and test data.
@@ -88,11 +157,10 @@ PROC_EPST_DIR=${EPST_DIR}/fairseq_processed
 HUBERT_MODEL_DIR=/data/sls/temp/clai24/pretrained-models/mHuBERT
 export PYTHONPATH="${PYTHONPATH}:${PWD}:${PWD}/../../:${PWD}/../hubert/simple_kmeans/"
 
-# EuroParl-ST: setup fairseq test manifest 
+# EuroParl-ST: setup fairseq test manifest without src unit extraction (doesn't require GPU)
 python3 valid_test_sets/prep_epst_test_data.py --epst-dir ${EPST_DIR}/v1.1 --proc-epst-dir ${PROC_EPST_DIR} --save-root ${SAVE_ROOT}
 
 # EuroParl-ST: setup fairseq test manifest with src unit extraction (requires GPU)
-# RUNNING on SLS
 CUDA_VISIBLE_DEVICES=0 python3 valid_test_sets/prep_epst_test_data_customized.py --epst-dir ${EPST_DIR}/v1.1 --proc-epst-dir ${PROC_EPST_DIR} --save-root ${SAVE_ROOT} --hubert-model-dir ${HUBERT_MODEL_DIR}
 
 # FLEURS: setup FLORES 
@@ -106,20 +174,28 @@ FLEURS_ROOT=/data/sls/temp/clai24/data/speech_matrix/eval_data/fleurs
 from datasets import load_dataset
 load_dataset("google/fleurs", "all", cache_dir=${FLEURS_ROOT})
 
-# FLEURS: preprocess. 
-# Sending to Satori 
+# FLEURS: preprocess
+PROC_FLEURS_DIR=/data/sls/temp/clai24/data/speech_matrix/eval_data/fairseq_processed_fleurs
+export PYTHONPATH="${PYTHONPATH}:${PWD}:${PWD}/../../:${PWD}/../hubert/simple_kmeans/"
 python3 valid_test_sets/preproc_fleurs_data.py --proc-fleurs-dir ${PROC_FLEURS_DIR} --cache-dir ${FLEURS_ROOT}
 
-PROC_FLEURS_DIR=/data/sls/temp/clai24/data/speech_matrix/eval_data/fairseq_processed_fleurs
-HUBERT_MODEL_DIR=/data/sls/temp/clai24/pretrained-models/mHuBERT
-export PYTHONPATH="${PYTHONPATH}:${PWD}:${PWD}/../../:${PWD}/../hubert/simple_kmeans/"
+# FLEURS: speech alignment 
+MANIFEST_ROOT=/data/sls/temp/clai24/data/speech_matrix/speech_to_unit/s2u_manifests
+python3 valid_test_sets/align_fleurs_data.py --flores-root ${FLORES_ROOT} --proc-fleurs-dir ${PROC_FLEURS_DIR} --save-root ${MANIFEST_ROOT} 
 
-# FLEURS: setup fairset test manifest with src unit extraction (requires GPU)
-# RUNNING on SLS 
+# FLEURS: setup fairseq valid manifest with src unit extraction (requires GPU) 
+HUBERT_MODEL_DIR=/data/sls/temp/clai24/pretrained-models/mHuBERT
+CUDA_VISIBLE_DEVICES=0 python3 valid_test_sets/prep_fleurs_valid_data.py --proc-fleurs-dir ${PROC_FLEURS_DIR} --save-root ${SAVE_ROOT} --hubert-model-dir ${HUBERT_MODEL_DIR}
+
+# FLEURS: setup fairseq test manifest without src unit extraction (doesn't require GPU) 
+python3 valid_test_sets/prep_fleurs_test_data.py --proc-fleurs-dir ${PROC_FLEURS_DIR} --save-root ${SAVE_ROOT}
+
+# FLEURS: setup fairseq test manifest with src unit extraction (requires GPU)
 CUDA_VISIBLE_DEVICES=0 python3 valid_test_sets/prep_fleurs_test_data_customized.py --proc-fleurs-dir ${PROC_FLEURS_DIR} --save-root ${SAVE_ROOT} --hubert-model-dir ${HUBERT_MODEL_DIR} 
 ```
 
 # Create model development train set 
+
 ```bash 
 # create filtered train / valid set for es-en 
 MANIFEST_ROOT=/data/sls/temp/clai24/data/speech_matrix/speech_to_unit/s2u_manifests
@@ -153,7 +229,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 ./s2ut-training_es-en.sh es en true
 
 # Bilingual S2ST model evaluation 
 
-Fisrt download pre-trained unit-vocoders.
+Requires setting up pre-trained unit-vocoders, see above. 
 
 ```bash 
 cd fairseq-ust/examples/speech_to_speech/
