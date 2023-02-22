@@ -14,7 +14,7 @@ conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit
 # install fairseq 
 cd fairseq-ust/
 pip install --editable ./
-pip install tensorboardX pandas
+pip install tensorboardX pandas datasets
 
 # install additional requirements 
 pip install -r requirements.txt
@@ -67,6 +67,7 @@ conda activate lexlearner
 # Run the following commands *sequentially*
 
 # SpeechMatrix: Speech-to-Speech Alignments (it takes 1-3 days to download all datasets)
+# Re-Running this to ensure aligned_speech are downlaoded correctly 
 python mined_train_sets/download_mined_data.py --save-root ${SAVE_ROOT}
 
 # download the prepared audios for VoxPopuli valid and test data.
@@ -92,20 +93,22 @@ python3 valid_test_sets/prep_epst_test_data.py --epst-dir ${EPST_DIR}/v1.1 --pro
 
 # EuroParl-ST: setup fairseq test manifest with src unit extraction (requires GPU)
 # RUNNING on SLS
-python3 valid_test_sets/prep_epst_test_data_customized.py --epst-dir ${EPST_DIR}/v1.1 --proc-epst-dir ${PROC_EPST_DIR} --save-root ${SAVE_ROOT} --hubert-model-dir ${HUBERT_MODEL_DIR}
+CUDA_VISIBLE_DEVICES=0 python3 valid_test_sets/prep_epst_test_data_customized.py --epst-dir ${EPST_DIR}/v1.1 --proc-epst-dir ${PROC_EPST_DIR} --save-root ${SAVE_ROOT} --hubert-model-dir ${HUBERT_MODEL_DIR}
 
 # FLEURS: setup FLORES 
 DATA_ROOT=/data/sls/temp/clai24/data
 wget --directory-prefix=${DATA_ROOT} --trust-server-names https://tinyurl.com/flores200dataset
 FLORES_ROOT=/data/sls/temp/clai24/data/flores200_dataset
 tar -xvf ${DATA_ROOT}/flores200_dataset.tar.gz --directory ${DATA_ROOT}
+FLEURS_ROOT=/data/sls/temp/clai24/data/speech_matrix/eval_data/fleurs
 
-# FLEURS: download via HF
-```python
+# FLEURS: download via HF via python 
 from datasets import load_dataset
-fleurs_retrieval = load_dataset("google/fleurs", "all")
-```
-python3 valid_test_sets/preproc_fleurs_data.py --proc-fleurs-dir ${PROC_FLEURS_DIR}
+load_dataset("google/fleurs", "all", cache_dir=${FLEURS_ROOT})
+
+# FLEURS: preprocess. 
+# Sending to Satori 
+python3 valid_test_sets/preproc_fleurs_data.py --proc-fleurs-dir ${PROC_FLEURS_DIR} --cache-dir ${FLEURS_ROOT}
 
 PROC_FLEURS_DIR=/data/sls/temp/clai24/data/speech_matrix/eval_data/fairseq_processed_fleurs
 HUBERT_MODEL_DIR=/data/sls/temp/clai24/pretrained-models/mHuBERT
@@ -113,7 +116,7 @@ export PYTHONPATH="${PYTHONPATH}:${PWD}:${PWD}/../../:${PWD}/../hubert/simple_km
 
 # FLEURS: setup fairset test manifest with src unit extraction (requires GPU)
 # RUNNING on SLS 
-python3 valid_test_sets/prep_fleurs_test_data_customized.py --proc-fleurs-dir ${PROC_FLEURS_DIR} --save-root ${SAVE_ROOT} --hubert-model-dir ${HUBERT_MODEL_DIR} 
+CUDA_VISIBLE_DEVICES=0 python3 valid_test_sets/prep_fleurs_test_data_customized.py --proc-fleurs-dir ${PROC_FLEURS_DIR} --save-root ${SAVE_ROOT} --hubert-model-dir ${HUBERT_MODEL_DIR} 
 ```
 
 # Create model development train set 
