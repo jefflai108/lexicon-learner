@@ -6,3 +6,6 @@ nltk
 absl-py
 wandb
 gpustat
+black
+isort
+pylint
