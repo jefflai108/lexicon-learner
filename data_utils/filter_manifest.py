@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--lan_pair', type=str, default='es-en')
     parser.add_argument('--data_filter_threshold', type=float, default=1.09)
-    parser.add_argument('--frame_threshold', type=int, default=200)
+    parser.add_argument('--frame_threshold', type=int, default=500)
     parser.add_argument('--data_root', type=str, default='/data/sls/temp/clai24/data/speech_matrix/speech_to_unit/s2u_manifests')
     args = parser.parse_args()
    

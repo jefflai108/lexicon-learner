@@ -54,6 +54,11 @@ cd fairseq-ust/
 
 pip install --editable ./
 pip install tensorboardX pandas
+
+# setup torchaudio. Necessary for fbank extraction
+git clone https://github.com/pytorch/audio.git
+# then add this to your ~/.bashrc 
+export PYTHONPATH="${PYTHONPATH}:/nobackup/users/clai24/tools/audio"
 ```
 
 # Download necessary pre-trained models 
@@ -237,4 +242,27 @@ conda activate lexlearner
 
 # inference, synthesis, AST-BLEU. Requires a GPU
 CUDA_VISIBLE_DEVICES=0 ./inference_es-en.sh
+```
+
+# Satori Instruction for Eki 
+
+```bash 
+# activate Jeff conda env 
+conda activate /nobackup/users/clai24/tools/anaconda3/envs/lexlearner2
+
+# add this to your ~/.bashrc 
+export PYTHONPATH="${PYTHONPATH}:/nobackup/users/clai24/tools/audio"
+
+# train a fairseq S2ST model. Remember to ensure the conda env is activated for either. 
+# scripts below are for your reference. 
+cd /nobackup/users/clai24/lexicon/fairseq-ust/examples/speech_to_speech
+
+## train locally by first requesting a node 
+srun --gres=gpu:4 -N 1 --exclusive --qos=sched_level_2 --mem=400G --time 24:00:00 --cpus-per-task=4 --ntasks-per-node=4 --pty /bin/bash
+CUDA_VISIBLE_DEVICES=0,1,2,3 ./satori-s2ut-training_es-en.sh es en true 400
+
+## train via slurm 
+sbatch satori-s2ut-training_es-en_L400.slurm
+
+# evaluation -- Satori not supported. Need to transfer trained model to SLS for eval. 
 ```
