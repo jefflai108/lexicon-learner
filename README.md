@@ -226,10 +226,10 @@ cd fairseq-ust/examples/speech_to_speech/
 conda activate lexlearner
 
 # training command for single node 1 GPU 
-CUDA_VISIBLE_DEVICES=0 ./s2ut-training_es-en.sh es en false
+CUDA_VISIBLE_DEVICES=0 ./s2ut-training_es-en.sh es en false 400
 
 # training command for single node 4 GPUs
-CUDA_VISIBLE_DEVICES=0,1,2,3 ./s2ut-training_es-en.sh es en true
+CUDA_VISIBLE_DEVICES=0,1,2,3 ./s2ut-training_es-en.sh es en true 400
 ```
 
 # Bilingual S2ST model evaluation 
@@ -241,10 +241,10 @@ cd fairseq-ust/examples/speech_to_speech/
 conda activate lexlearner
 
 # inference, synthesis, AST-BLEU. Requires a GPU
-CUDA_VISIBLE_DEVICES=0 ./inference_es-en.sh
+CUDA_VISIBLE_DEVICES=0 ./s2ut-inference_es-en.sh es en 400
 ```
 
-# Satori Instruction for Eki 
+# Satori Instruction for Ekin
 
 ```bash 
 # activate Jeff conda env 
@@ -265,4 +265,17 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 ./satori-s2ut-training_es-en.sh es en true 400
 sbatch satori-s2ut-training_es-en_L400.slurm
 
 # evaluation -- Satori not supported. Need to transfer trained model to SLS for eval. 
+```
+
+# Unit-to-Unit S2ST experiments 
+
+```bash 
+cd fairseq-ust/examples/speech_to_speech/
+conda activate lexlearner
+
+# training command for single node 4 GPUs
+CUDA_VISIBLE_DEVICES=0,1,2,3 ./u2ut-training_es-en.sh es en true 400
+
+# evaluation command 
+CUDA_VISIBLE_DEVICES=0 ./u2ut-inference_es-en.sh es en 400
 ```
