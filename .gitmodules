@@ -1,3 +1,6 @@
 [submodule "fairseq-ust"]
 	path = fairseq-ust
 	url = git@github.com:jefflai108/fairseq-ust.git
+[submodule "unit_info_align"]
+	path = unit_info_align
+	url = git@github.com:jefflai108/unit_info_align.git
