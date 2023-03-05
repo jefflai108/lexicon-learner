@@ -267,6 +267,17 @@ sbatch satori-s2ut-training_es-en_L400.slurm
 # evaluation -- Satori not supported. Need to transfer trained model to SLS for eval. 
 ```
 
+# Create Unit-to-Unit fariseq tsv files 
+
+```bash 
+MANIFEST_ROOT=/data/sls/temp/clai24/data/speech_matrix/speech_to_unit/s2u_manifests
+
+# e.g. create unit-to-unit tsv for utterances filtered by target utt frame <= 100 frames 
+python data_utils/create_src_unit_tsv.py \ 
+    --lan_pair es-en --data_filter_threshold 1.09 --frame_threshold 100 \
+    --data_root ${MANIFEST_ROOT}
+```
+
 # Unit-to-Unit S2ST experiments 
 
 ```bash 
@@ -279,3 +290,12 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 ./u2ut-training_es-en.sh es en true 400
 # evaluation command 
 CUDA_VISIBLE_DEVICES=0 ./u2ut-inference_es-en.sh es en 400
 ```
+
+# Create Unit-to-Unit Lexicon w/ IBM Model 2
+
+```bash 
+cd lexlstm/lexicon
+# extract forward and reverse unit intersection counts, and convert to prob distributions
+./speech_lexicon_extractor.sh
+```
+
