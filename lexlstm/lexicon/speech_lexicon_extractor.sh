@@ -17,13 +17,13 @@ for target_len in 50 100 250 400 500 800 1000 1024; do
     fi
 
     for pstr in "${target}"; do
-        #echo "fast-align -i ${train_lex_file} ${p} > ${lexicon_alignment_root}/forward.align.${pstr}"
-        #/data/sls/scratch/clai24/tools/fast_align/build/fast_align -i ${train_lex_file} ${p} > ${lexicon_alignment_root}/forward.align.${pstr}
-        #/data/sls/scratch/clai24/tools/fast_align/build/fast_align -i ${train_lex_file} -r ${p} > ${lexicon_alignment_root}/reverse.align.${pstr}
-        #/data/sls/scratch/clai24/tools/fast_align/build/atools -i ${lexicon_alignment_root}/forward.align.${pstr} -j ${lexicon_alignment_root}/reverse.align.${pstr} -c intersect >${lexicon_alignment_root}/diag.align.${pstr}
-        #python summarize_aligned_data.py ${train_lex_file} ${lexicon_alignment_root}/forward.align.${pstr}
-        #python summarize_aligned_data.py ${train_lex_file} ${lexicon_alignment_root}/reverse.align.${pstr}
-        #python summarize_aligned_data.py ${train_lex_file} ${lexicon_alignment_root}/diag.align.${pstr}
+        echo "fast-align -i ${train_lex_file} ${p} > ${lexicon_alignment_root}/forward.align.${pstr}"
+        /data/sls/scratch/clai24/tools/fast_align/build/fast_align -i ${train_lex_file} ${p} > ${lexicon_alignment_root}/forward.align.${pstr}
+        /data/sls/scratch/clai24/tools/fast_align/build/fast_align -i ${train_lex_file} -r ${p} > ${lexicon_alignment_root}/reverse.align.${pstr}
+        /data/sls/scratch/clai24/tools/fast_align/build/atools -i ${lexicon_alignment_root}/forward.align.${pstr} -j ${lexicon_alignment_root}/reverse.align.${pstr} -c intersect >${lexicon_alignment_root}/diag.align.${pstr}
+        python summarize_aligned_data.py ${train_lex_file} ${lexicon_alignment_root}/forward.align.${pstr}
+        python summarize_aligned_data.py ${train_lex_file} ${lexicon_alignment_root}/reverse.align.${pstr}
+        python summarize_aligned_data.py ${train_lex_file} ${lexicon_alignment_root}/diag.align.${pstr}
 
         lexicon_align_file=${lexicon_alignment_root}/diag.align.${pstr}.json
         if [ -f ${lexicon_align_file} ]; then 
