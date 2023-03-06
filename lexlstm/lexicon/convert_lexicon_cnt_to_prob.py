@@ -7,13 +7,21 @@ import numpy as np
 def main(lex_align_file, lex_align_prob_file, src_vocab_size=1000, tgt_vocab_size=1000, fairseq_dict_offset=4, softmax_temp=0.1):
 
     # Fairseq dictionary prepended these symbols (https://github.com/facebookresearch/fairseq/blob/0338cdc3094ca7d29ff4d36d64791f7b4e4b5e6e/fairseq/data/dictionary.py#L34-L37)
+    # these are additions for both src and tgt dictionaries
     BOS_TOKEN = 0 
     PAD_TOLEN = 1
     EOS_TOKEN = 2
     UNK_TOKEN = 3
+    assert fairseq_dict_offset == 4
 
     lex_align_cnt = read_json_file(lex_align_file)
-    lex_align_prob = np.zeros((src_vocab_size, tgt_vocab_size+fairseq_dict_offset))
+    lex_align_prob = np.zeros((src_vocab_size+fairseq_dict_offset, tgt_vocab_size+fairseq_dict_offset))
+
+    # edge cases
+    lex_align_prob[BOS_TOKEN][BOS_TOKEN] = 1.0 
+    lex_align_prob[PAD_TOLEN][:] = 1.0 / (tgt_vocab_size+fairseq_dict_offset)
+    lex_align_prob[EOS_TOKEN][:] = 1.0 / (tgt_vocab_size+fairseq_dict_offset)
+    lex_align_prob[UNK_TOKEN][:] = 1.0 / (tgt_vocab_size+fairseq_dict_offset)
 
     # find unaligned src tokens, map them to Fairseq <unk>
     unaligned_src_tokens = [] 
@@ -22,21 +30,23 @@ def main(lex_align_file, lex_align_prob_file, src_vocab_size=1000, tgt_vocab_siz
         if key not in lex_align_cnt.keys(): 
             unaligned_src_tokens.append(key) 
 
-    for token in unaligned_src_tokens:
-        lex_align_prob[int(token)][UNK_TOKEN] = 1.0
+    for k in unaligned_src_tokens:
+        token = int(k) + fairseq_dict_offset
+        lex_align_prob[token][UNK_TOKEN] = 1.0
 
     # convert aligned token_cnt into probabilities 
     for (src,tgt_dict_cnt) in lex_align_cnt.items(): 
-        src = int(src)
+        src = int(src) + fairseq_dict_offset
         tgt_aligned_tokens = np.array([int(j) + fairseq_dict_offset for j in tgt_dict_cnt.keys()])
         tgt_aligned_token_cnt = torch.tensor(np.array(list(tgt_dict_cnt.values())), dtype=torch.float)
-        lex_align_prob[src][tgt_aligned_tokens] = F.softmax(tgt_aligned_token_cnt / softmax_temp, dim=0).numpy()
+        lex_align_prob[src][tgt_aligned_tokens] = F.softmax(tgt_aligned_token_cnt / float(softmax_temp), dim=0).numpy()
 
     # print some statistics 
     copy_translation = []
     for i in range(src_vocab_size): 
         tgt_idx = np.argmax(lex_align_prob[i]) - fairseq_dict_offset
-        if i == tgt_idx: 
+        src_idx = i - fairseq_dict_offset
+        if src_idx == tgt_idx: 
             copy_translation.append(i)
     print('there are %d src tokens that mapped directly to its corresponding tgt token (copy translation)' % len(copy_translation))
 
@@ -50,4 +60,4 @@ def read_json_file(file_path):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    main(sys.argv[1], sys.argv[2], softmax_temp=sys.argv[3])
