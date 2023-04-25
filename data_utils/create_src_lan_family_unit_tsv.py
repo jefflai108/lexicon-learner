@@ -47,10 +47,9 @@ if __name__ == '__main__':
     import argparse 
     parser = argparse.ArgumentParser('Filter fairseq manifest')
 
-    parser.add_argument('--lan_pair', type=str, default='ro-en')
-    parser.add_argument('--data_filter_threshold', type=float, default=1.07)
-    parser.add_argument('--frame_threshold', type=int, default=1024)
-    parser.add_argument('--data_root', type=str, default='/data/sls/temp/clai24/data/speech_matrix/speech_to_unit/s2u_manifests')
+    parser.add_argument('--lan_pair', type=str, default='Romance-en')
+    parser.add_argument('--frame_threshold', type=int, default=250)
+    parser.add_argument('--data_root', type=str, default='/data/sls/temp/clai24/data/speech_matrix/speech_to_unit/ms2u_manifests')
     args = parser.parse_args()
    
     # e.g.
@@ -60,17 +59,12 @@ if __name__ == '__main__':
     #lan_pair = 'ro-en'
     #data_filter_threshold = 1.07
     
-    fix_train_mined_tsv(f'{args.data_root}/{args.lan_pair}/train_mined_t{args.data_filter_threshold}_filter{args.frame_threshold}.tsv', 
-                        f'{args.data_root}/{args.lan_pair}/source_unit/train_mined_t{args.data_filter_threshold}_filter{args.frame_threshold}.tsv', 
-                        f'{args.data_root}/{args.lan_pair}/train_mined_t{args.data_filter_threshold}_filter{args.frame_threshold}_u2u.tsv') 
-                    
-    fix_valid_vp_tsv(f'{args.data_root}/{args.lan_pair}/valid_vp_filter{args.frame_threshold}.tsv', 
-                     f'{args.data_root}/{args.lan_pair}/source_unit/valid_vp_filter{args.frame_threshold}.tsv', 
-                     f'{args.data_root}/{args.lan_pair}/valid_vp_filter{args.frame_threshold}_u2u.tsv')
-
-    fix_valid_vp_tsv(f'{args.data_root}/{args.lan_pair}/test_epst_filter{args.frame_threshold}.tsv',
-                     f'{args.data_root}/{args.lan_pair}/source_unit/test_epst_filter{args.frame_threshold}.tsv',
-                     f'{args.data_root}/{args.lan_pair}/test_epst_filter{args.frame_threshold}_u2u.tsv')
+    fix_train_mined_tsv(f'{args.data_root}/{args.lan_pair}/train_mined_filter{args.frame_threshold}.tsv', 
+                        f'{args.data_root}/{args.lan_pair}/source_unit/train_mined_filter{args.frame_threshold}.tsv', 
+                        f'{args.data_root}/{args.lan_pair}/train_mined_filter{args.frame_threshold}_u2u.tsv') 
+    fix_valid_vp_tsv(f'{args.data_root}/{args.lan_pair}/valid_filter{args.frame_threshold}.tsv', 
+                     f'{args.data_root}/{args.lan_pair}/source_unit/valid_filter{args.frame_threshold}.tsv', 
+                     f'{args.data_root}/{args.lan_pair}/valid_filter{args.frame_threshold}_u2u.tsv')
 
     fix_valid_vp_tsv(f'{args.data_root}/{args.lan_pair}/test_fleurs.tsv',
                      f'{args.data_root}/{args.lan_pair}/source_unit/test_fleurs.tsv',

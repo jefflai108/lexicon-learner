@@ -4,8 +4,8 @@ SRC_LAN=ro
 TGT_LAN=en
 DATA_FILTER_THRESHOLD=1.07
 
-for target_len in 50 200 250 400 500 800 1000 1024; do
-    target=filter${target_len}_u2u
+for target_len in 1024; do
+    target=filter${target_len}_subset0.1_u2u
     echo $target
 
     manifest_root=/data/sls/temp/clai24/data/speech_matrix/speech_to_unit/s2u_manifests/${SRC_LAN}-${TGT_LAN}
@@ -19,7 +19,7 @@ for target_len in 50 200 250 400 500 800 1000 1024; do
         # convert manifest u2u tsv --> fast_align tsv 
         cut -d$'\t' -f 3,5 ${train_u2u_file} | tail -n +2 | awk -F'\t' '{print $1" ||| "$2}' > ${train_lex_file}
     fi
-
+    
     for pstr in "${target}"; do
         echo "fast-align -i ${train_lex_file} ${p} > ${lexicon_alignment_root}/forward.align.${pstr}"
         /data/sls/scratch/clai24/tools/fast_align/build/fast_align -i ${train_lex_file} ${p} > ${lexicon_alignment_root}/forward.align.${pstr}

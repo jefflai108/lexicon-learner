@@ -39,7 +39,20 @@ def main(lex_align_file, lex_align_prob_file, src_vocab_size=1000, tgt_vocab_siz
         src = int(src) + fairseq_dict_offset
         tgt_aligned_tokens = np.array([int(j) + fairseq_dict_offset for j in tgt_dict_cnt.keys()])
         tgt_aligned_token_cnt = torch.tensor(np.array(list(tgt_dict_cnt.values())), dtype=torch.float)
-        lex_align_prob[src][tgt_aligned_tokens] = F.softmax(tgt_aligned_token_cnt / float(softmax_temp), dim=0).numpy()
+
+        if float(softmax_temp) == 0.0: # argmax case
+            max_val = tgt_aligned_token_cnt.max()
+            bool_tensor = torch.eq(tgt_aligned_token_cnt, max_val)
+            # cast the binary tensor to the same data type as the original tensor
+            bool_tensor = bool_tensor.type_as(tgt_aligned_token_cnt)
+
+            num_true = torch.sum(bool_tensor)
+            if num_true == 1: 
+                lex_align_prob[src][tgt_aligned_tokens] = bool_tensor
+            else: 
+                lex_align_prob[src][tgt_aligned_tokens] = (bool_tensor / num_true).numpy()
+        else: # sofmtax distribution
+            lex_align_prob[src][tgt_aligned_tokens] = F.softmax(tgt_aligned_token_cnt / float(softmax_temp), dim=0).numpy()
 
     # print some statistics 
     copy_translation = []

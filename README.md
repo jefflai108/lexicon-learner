@@ -299,3 +299,53 @@ cd lexlstm/lexicon
 ./speech_lexicon_extractor.sh
 ```
 
+# Create oracle phone / word alignments 
+
+```bash 
+# Step 1: transcribe with Whisper (requires GPU)
+pip install -U openai-whisper
+python data_utils/transcribe_via_whisper.py
+# do sbatch data_utils/transcribe_via_whisper.sh for slurm jobs 
+
+# Alternative Step 1: if audio is in .zip (fairseq) format, do the following,
+# it first reads the .zip file and stores the wav in a standalone file, then run whisper
+# also ran in parallel. Specify # process and process ID in command line arg
+python data_utils/read_train_mined_audio.py --split en-train_mined_t1.09 --nprocess 20 --process_id 0
+# do sbatch data_utils/read_train_mined_audio.sh en-train_mined_t1.09 20 0
+
+# Step 2: text post-processing (no GPU)
+python data_utils/text_norm.py
+
+# Step 3: run MFA for alignment (no GPU) 
+# if the # of (*.wav, *.txt) exceeds 10k. Run aligner for 10k pairs at once. Organize the directory with 
+# python distribute.py
+./data_utils/aligner.sh
+# if run in parallel, do ./data_utils/aligner.sh 23 (23 is the process_id)
+
+# Step 4: process MFA textgrid files (no GPU)
+pip install textgrid 
+python data_utils/process_textgrid.py --seg_type phones
+python data_utils/process_textgrid.py --seg_type words
+```
+
+# Training HubertInfoAlign Model 
+
+```bash 
+cd /data/sls/scratch/clai24/lexicon/fairseq/examples/hubert
+sbatch scripts/run_pretrain_v03.sh
+```
+
+# Decoding HubertInfoAlign Model
+
+```bash 
+cd /data/sls/scratch/clai24/lexicon/fairseq/examples/hubert
+# Step 1: run and store parsing results (requires GPU for model inference)
+python decode_scripts/hubert_info_align_phn_decode.py --split en-valid_vp --min-merge-pmi -5 --parse-alg top_down 
+# to run on slurm: sbatch decode_scripts/hubert_info_align_phn_decode.sh -5 top_down 
+
+# Step 2: visualization 
+run ipython notebook: parsing_phn_viz.ipynb
+
+# Step 3: word seg F1 
+python analysis_scripts/cal_word_seg_f1.py --split en-valid_vp --min-pmi 0 --parse-alg top_down --top-down-recursive-search
+```
